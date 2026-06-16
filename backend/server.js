@@ -90,9 +90,13 @@ app.use((err, req, res, next) => {
 // ======================
 // START SERVER
 // ======================
+module.exports = app;
 
-app.listen(PORT, () => {
-  console.log("======================================");
-  console.log(`🚀 Counsela Server berjalan di port ${PORT}`);
-  console.log("======================================");
-});
+// Jalankan jika bukan di Vercel
+if (require.main === module) {
+  app.listen(PORT, () => {
+    console.log("======================================");
+    console.log(`🚀 Counsela Server berjalan di port ${PORT}`);
+    console.log("======================================");
+  });
+}
