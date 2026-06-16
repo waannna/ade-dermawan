@@ -1,0 +1,252 @@
+@import "tailwindcss";
+
+/* Light mode (default) */
+body {
+  background-color: #f3f4f6;
+  color: #111827;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Dark mode */
+.dark body {
+  background-color: #111827;
+  color: #f9fafb;
+}
+
+/* Card styling */
+.bg-white {
+  background-color: #ffffff;
+}
+
+.dark .bg-white {
+  background-color: #1f2937 ;
+}
+
+.bg-gray-50 {
+  background-color: #f9fafb;
+}
+
+.dark .bg-gray-50 {
+  background-color: #111827 ;
+}
+
+.bg-gray-100 {
+  background-color: #f3f4f6;
+}
+
+.dark .bg-gray-100 {
+  background-color: #374151 ;
+}
+
+/* Text colors */
+.text-gray-800 {
+  color: #1f2937;
+}
+
+.dark .text-gray-800 {
+  color: #f3f4f6 ;
+}
+
+.text-gray-700 {
+  color: #374151;
+}
+
+.dark .text-gray-700 {
+  color: #d1d5db ;
+}
+
+.text-gray-600 {
+  color: #4b5563;
+}
+
+.dark .text-gray-600 {
+  color: #9ca3af ;
+}
+
+.text-gray-500 {
+  color: #6b7280;
+}
+
+.dark .text-gray-500 {
+  color: #6b7280 ;
+}
+
+.text-gray-400 {
+  color: #9ca3af;
+}
+
+.dark .text-gray-400 {
+  color: #9ca3af ;
+}
+
+/* Border colors */
+.border-gray-200 {
+  border-color: #e5e7eb;
+}
+
+.dark .border-gray-200 {
+  border-color: #374151 ;
+}
+
+.border-gray-300 {
+  border-color: #d1d5db;
+}
+
+.dark .border-gray-300 {
+  border-color: #4b5563 ;
+}
+
+/* Input */
+input, textarea, select {
+  background-color: #ffffff;
+  border: 1px solid #d1d5db;
+  color: #111827;
+}
+
+.dark input, .dark textarea, .dark select {
+  background-color: #1f2937 ;
+  border-color: #4b5563 ;
+  color: #f9fafb ;
+}
+
+input::placeholder, textarea::placeholder {
+  color: #9ca3af;
+}
+
+.dark input::placeholder, .dark textarea::placeholder {
+  color: #6b7280 ;
+}
+
+/* Sidebar background */
+.bg-white\/95, .bg-white\/80 {
+  background-color: #ffffff;
+}
+
+.dark .bg-white\/95, .dark .bg-white\/80 {
+  background-color: #1f2937 ;
+}
+
+/* Hover effects */
+.hover\:bg-gray-100:hover {
+  background-color: #f3f4f6;
+}
+
+.dark .hover\:bg-gray-100:hover {
+  background-color: #374151 ;
+}
+
+.hover\:bg-gray-200:hover {
+  background-color: #e5e7eb;
+}
+
+.dark .hover\:bg-gray-200:hover {
+  background-color: #4b5563 ;
+}
+
+/* Shadow */
+.shadow-lg, .shadow-md, .shadow-sm {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px -1px rgba(0, 0, 0, 0.1);
+}
+
+.dark .shadow-lg, .dark .shadow-md, .dark .shadow-sm {
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.5), 0 1px 2px -1px rgba(0, 0, 0, 0.5);
+}
+
+/* Hero gradient */
+.bg-gradient-to-r {
+  background-size: 100% 100%;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e5e7eb;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #6b7280;
+}
+
+.dark ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Button primary */
+.btn-primary {
+  background: linear-gradient(135deg, #3b82f6, #2563eb);
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  font-weight: 500;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-block;
+}
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 10px 15px -3px rgba(59,130,246,0.3);
+}
+
+/* Button secondary */
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  color: #4b5563;
+  padding: 0.75rem 1.5rem;
+  border-radius: 0.75rem;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  display: inline-block;
+}
+.btn-secondary:hover {
+  background: rgba(0,0,0,0.05);
+}
+.dark .btn-secondary {
+  border-color: #4b5563;
+  color: #9ca3af;
+}
+.dark .btn-secondary:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+/* Hero gradient class */
+.hero-gradient {
+  background: linear-gradient(135deg, #1e40af 0%, #312e81 100%);
+}
+.dark .hero-gradient {
+  background: linear-gradient(135deg, #1e3a8a 0%, #4c1d95 100%);
+}
+
+/* Card */
+.card {
+  background-color: #ffffff;
+  border-radius: 1rem;
+  border: 1px solid #e5e7eb;
+  transition: all 0.2s;
+}
+.dark .card {
+  background-color: #1f2937;
+  border-color: #374151;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+}
