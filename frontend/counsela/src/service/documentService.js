@@ -1,5 +1,3 @@
-// src/services/documentService.js
-
 import api from "../utils/axios";
 
 const documentService = {

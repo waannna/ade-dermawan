@@ -5,11 +5,10 @@ const api = axios.create({
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true, // PENTING! Agar cookie terkirim otomatis
+  withCredentials: true,
   timeout: 10000,
 })
 
-// Backup: jika masih ada token di localStorage (untuk kompatibilitas)
 api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token")

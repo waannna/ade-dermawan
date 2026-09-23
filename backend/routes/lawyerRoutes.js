@@ -9,9 +9,7 @@ const roleMiddleware = require("../middleware/roleMiddleware");
 // PUBLIC (bisa diakses semua orang)
 router.get("/", lawyerController.getLawyers);
 router.get("/:id", lawyerController.getLawyerById);
-
-// GET LAWYER WORKING HOURS (bisa diakses semua orang yang login)
-router.get("/:id/schedule", authMiddleware, lawyerController.getLawyerSchedule);
+router.get("/:id/schedule", lawyerController.getLawyerSchedule);
 
 // ADMIN ONLY
 router.post("/", authMiddleware, roleMiddleware("admin"), lawyerController.createLawyer);

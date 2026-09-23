@@ -1,12 +1,10 @@
 import api from "../utils/axios"
 
 const lawyerService = {
-  // Ambil semua lawyer
   getAllLawyers: async () => {
     try {
       const response = await api.get("/lawyers")
       console.log("API Response /lawyers:", response.data)
-      // Response dari backend: { success: true, data: [...] }
       return response.data.data || response.data
     } catch (error) {
       console.error("Error getAllLawyers:", error)
@@ -14,12 +12,10 @@ const lawyerService = {
     }
   },
 
-  // Ambil detail lawyer by ID
   getLawyerById: async (id) => {
     try {
       const response = await api.get(`/lawyers/${id}`)
       console.log("API Response /lawyers/${id}:", response.data)
-      // Response dari backend: { success: true, data: {...} }
       return response.data.data || response.data
     } catch (error) {
       console.error("Error getLawyerById:", error)

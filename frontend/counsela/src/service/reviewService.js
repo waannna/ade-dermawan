@@ -1,5 +1,3 @@
-// src/services/reviewService.js
-
 import api from "../utils/axios";
 
 const reviewService = {

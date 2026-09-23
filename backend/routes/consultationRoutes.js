@@ -41,7 +41,13 @@ router.get("/client", authMiddleware, roleMiddleware("client"), consultationCont
 // ======================
 // GET BOOKED SLOTS
 // ======================
+router.get("/slots", consultationController.getBookedSlots);
 router.get("/lawyer/:lawyerId/schedule", authMiddleware, consultationController.getBookedSlots);
+
+// ======================
+// GET ARCHIVED CONSULTATIONS
+// ======================
+router.get("/archived", authMiddleware, consultationController.getArchivedConsultations);
 
 // ======================
 // GET CONSULTATION BY ID
@@ -49,9 +55,10 @@ router.get("/lawyer/:lawyerId/schedule", authMiddleware, consultationController.
 router.get("/:id", authMiddleware, consultationController.getConsultationById);
 
 // ======================
-// HIDE CONSULTATION (Soft Delete)
+// HIDE / UNARCHIVE CONSULTATION (Soft Delete)
 // ======================
 router.patch("/:id/hide", authMiddleware, consultationController.hideConsultation);
+router.patch("/:id/unarchive", authMiddleware, consultationController.unarchiveConsultation);
 
 // ======================
 // UPDATE STATUS (GENERAL)

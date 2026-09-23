@@ -697,7 +697,10 @@ exports.hideConsultation = async (req, res) => {
     
     await db.query(
       `UPDATE consultations 
-       SET hidden_for = array_append(hidden_for, $1)
+       SET hidden_for = CASE 
+         WHEN COALESCE(hidden_for, ARRAY[]::text[]) @> ARRAY[$1]::text[] THEN hidden_for
+         ELSE array_append(COALESCE(hidden_for, ARRAY[]::text[]), $1)
+       END
        WHERE id = $2`,
       [userType, id]
     );
@@ -709,6 +712,96 @@ exports.hideConsultation = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.unarchiveConsultation = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const userId = req.user.id;
+    const userRole = req.user.role;
+    const userType = `${userRole}_${userId}`;
+    
+    let isAuthorized = false;
+    
+    if (userRole === 'client') {
+      const check = await db.query(
+        "SELECT id FROM consultations WHERE id = $1 AND client_id = $2",
+        [id, userId]
+      );
+      isAuthorized = check.rows.length > 0;
+    } else if (userRole === 'lawyer') {
+      const check = await db.query(
+        `SELECT c.id FROM consultations c
+         JOIN lawyers l ON c.lawyer_id = l.id
+         WHERE c.id = $1 AND l.user_id = $2`,
+        [id, userId]
+      );
+      isAuthorized = check.rows.length > 0;
+    } else if (userRole === 'admin') {
+      isAuthorized = true;
+    }
+    
+    if (!isAuthorized) {
+      return res.status(403).json({ 
+        success: false, 
+        message: "Anda tidak memiliki akses untuk memulihkan riwayat ini" 
+      });
+    }
+    
+    await db.query(
+      `UPDATE consultations 
+       SET hidden_for = array_remove(COALESCE(hidden_for, ARRAY[]::text[]), $1)
+       WHERE id = $2`,
+      [userType, id]
+    );
+    
+    res.json({ 
+      success: true, 
+      message: "Riwayat konsultasi telah dipulihkan ke daftar utama" 
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+exports.getArchivedConsultations = async (req, res) => {
+  try {
+    const userId = req.user.id;
+    const userRole = req.user.role;
+    const userType = `${userRole}_${userId}`;
+    
+    let query = `
+      SELECT
+        c.*,
+        client.nama AS client_name,
+        lawyer_user.nama AS lawyer_name,
+        l.tarif_konsultasi
+      FROM consultations c
+      JOIN users client ON c.client_id = client.id
+      JOIN lawyers l ON c.lawyer_id = l.id
+      JOIN users lawyer_user ON l.user_id = lawyer_user.id
+      WHERE (COALESCE(c.hidden_for, ARRAY[]::text[]) @> ARRAY[$1]::text[])
+    `;
+    
+    let params = [userType];
+    
+    if (userRole === 'client') {
+      query += ` AND c.client_id = $2`;
+      params.push(userId);
+    } else if (userRole === 'lawyer') {
+      query += ` AND l.user_id = $2`;
+      params.push(userId);
+    }
+    
+    query += ` ORDER BY c.created_at DESC`;
+    
+    const result = await db.query(query, params);
+    return res.json({ success: true, data: result.rows });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: "Terjadi kesalahan server" });
   }
 };
 
@@ -790,5 +883,29 @@ exports.getAdminWallet = async (req, res) => {
   } catch (error) {
     console.error(error);
     res.status(500).json({ success: false, message: error.message });
+  }
+};
+
+// =========================
+// GET BOOKED SLOTS
+// =========================
+exports.getBookedSlots = async (req, res) => {
+  try {
+    const { lawyer_id, date } = req.query;
+    if (!lawyer_id || !date) {
+      return res.json({ success: true, data: [] });
+    }
+    const result = await db.query(
+      `SELECT jam_konsultasi FROM consultations 
+       WHERE lawyer_id = $1 
+       AND tanggal_konsultasi = $2 
+       AND status NOT IN ('cancelled')`,
+      [lawyer_id, date]
+    );
+    const booked = result.rows.map((r) => r.jam_konsultasi);
+    return res.json({ success: true, data: booked });
+  } catch (error) {
+    console.error(error);
+    return res.status(500).json({ success: false, message: error.message });
   }
 };
